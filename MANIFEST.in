@@ -1,0 +1,3 @@
+include VERSION
+recursive-include test/_data *.py
+recursive-include test/_packages *.py

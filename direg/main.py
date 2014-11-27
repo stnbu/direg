@@ -1,0 +1,59 @@
+# -*- Mode: python; tab-width: 4; indent-tabs-mode:nil; -*- vim: ai ts=4 sts=4 et sw=4 ft=python
+
+import logging
+_logger = logging.getLogger(__name__)
+
+import os
+import imp
+import sys
+import inspect
+
+registries = []
+
+def load_module(name, path):
+    try:
+        module = imp.load_source(name, path)
+    except IOError:
+        _logger.info('{0}: no such file'.format(path))
+        module = imp.new_module(name)
+        module.data = {}
+    return module
+
+def get_registry_data(registries):
+    data = {}
+    for registry in registries:
+        module = load_module('_module', registry)
+        data.update(module.data)
+    return data
+
+def get_class_from_frame(fr):
+    args, _, _, value_dict = inspect.getargvalues(fr)
+    if len(args) and args[0] == 'self':
+        instance = value_dict.get('self', None)
+        if instance:
+            return getattr(instance, '__class__', None).__name__
+    return None
+
+def compute_key(s):
+    frame = sys._getframe().f_back
+    frame = frame.f_back
+    fun_name = frame.f_code.co_name
+    if fun_name == '<module>':
+        fun_name = ''
+    components = []
+    mod_name = inspect.getmodule(frame.f_code).__name__
+    components.append(mod_name)
+    zclass = get_class_from_frame(frame)
+    if zclass is not None:
+        components.append(zclass)
+    if fun_name:
+        components.append(fun_name)
+    components.append(s)
+    key = '.'.join(components)
+    return key
+
+def get_value(s):
+    global registries
+    key = compute_key(s)
+    value = get_registry_data(registries)[key]
+    return value
