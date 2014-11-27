@@ -8,7 +8,7 @@ def read(file):
 setup(name='direg',
     version=read('VERSION'),
     description='Drop In REGistry. Easily maintain a central configuration registry for your complex python project.',
-    long_description=read('README'),
+    long_description=read('README.rst'),
     author='Mike Burr',
     author_email='mburr@unintuitive.org',
     #install_requires=requires,
