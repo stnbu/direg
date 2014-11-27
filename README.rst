@@ -2,12 +2,10 @@ direg Overview
 **************
 
 direg lets you maintain arbitrary registry data (in the form of python dictionaries that can be "merged" in a logical
-way (think: global config -vs- user config). With a small amount of work, it will be possible to replace hardcoded
+way (think: global config -vs- user config). With a small amount of work, it is possible to replace hardcoded
 values with easily-maintainable and flexible registry entries.
 
-Suppose we have a file at /my/path/registry.py with the following contents.
-
-``/my/path/registry.py``
+Suppose we have a file at ``/my/path/registry.py`` with the following contents.
 
 .. code-block:: python
 
@@ -19,7 +17,7 @@ Suppose we have a file at /my/path/registry.py with the following contents.
     }
 
 
-then, in some module "one", we can do the following:
+Then, in some module ``one``, we can do the following:
 
 ``one.py``
 

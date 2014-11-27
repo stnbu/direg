@@ -7,13 +7,18 @@ def read(file):
 
 setup(name='direg',
     version=read('VERSION'),
-    description='Drop In REGistry. Easily maintain a central configuration registry for your complex python project.',
+    description='A drop-in registry. Easily maintain a central configuration registry for your complex python project.',
     long_description=read('README.rst'),
     author='Mike Burr',
     author_email='mburr@unintuitive.org',
-    #install_requires=requires,
-    #requires=requires,
-    #classifiers=[],
+    url='https://github.com/stnbu/direg',
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python :: 2',
+        'Topic :: Software Development',
+        'Topic :: Utilities',
+    ],
     packages=['direg'],
-    #package_dir={'': 'direg'},
+    keywords=['configuration', 'registry', 'refactor'],
 )
