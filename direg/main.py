@@ -1,4 +1,6 @@
-# -*- Mode: python; tab-width: 4; indent-tabs-mode:nil; -*- vim: ai ts=4 sts=4 et sw=4 ft=python
+# -*- coding: utf-8 -*-
+"""For the moment, this is pretty much all of direg. __init__.py imports all of this module.
+"""
 
 import logging
 logger = logging.getLogger(__name__)
@@ -9,6 +11,7 @@ import sys
 import inspect
 
 registries = []
+
 
 def load_module(name, path):
     """Load and return module object at "path"
@@ -21,6 +24,7 @@ def load_module(name, path):
         module.data = {}
     return module
 
+
 def get_registry_data(registries):
     """Merge and return the namespaces of modules listed in iterable "registries"
     """
@@ -30,6 +34,7 @@ def get_registry_data(registries):
         data.update(module.data)
     return data
 
+
 def get_class_from_frame(fr):
     args, _, _, value_dict = inspect.getargvalues(fr)
     if len(args) and args[0] == 'self':
@@ -37,6 +42,7 @@ def get_class_from_frame(fr):
         if instance:
             return getattr(instance, '__class__', None).__name__
     return None
+
 
 def compute_key(s):
     frame = sys._getframe().f_back
@@ -56,6 +62,7 @@ def compute_key(s):
     key = '.'.join(components)
     return key
 
+
 def get_value(s):
     """Look up key in a given context. For example, in a module called "foo", if we have:
 
@@ -69,7 +76,6 @@ def get_value(s):
         Then the registry/registries will be consulted for a key 'foo.Bar.meth.my_var' and it's corresponding value
         will be returned.
     """
-    global registries
     key = compute_key(s)
     value = get_registry_data(registries)[key]
     return value

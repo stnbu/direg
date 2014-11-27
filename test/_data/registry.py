@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 data = {
     'one.Foo.meth.somevar': 26804,
