@@ -1,7 +1,7 @@
 # -*- Mode: python; tab-width: 4; indent-tabs-mode:nil; -*- vim: ai ts=4 sts=4 et sw=4 ft=python
 
 import logging
-_logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 import os
 import imp
@@ -11,15 +11,19 @@ import inspect
 registries = []
 
 def load_module(name, path):
+    """Load and return module object at "path"
+    """
     try:
         module = imp.load_source(name, path)
     except IOError:
-        _logger.info('{0}: no such file'.format(path))
+        logger.info('{0}: no such file'.format(path))
         module = imp.new_module(name)
         module.data = {}
     return module
 
 def get_registry_data(registries):
+    """Merge and return the namespaces of modules listed in iterable "registries"
+    """
     data = {}
     for registry in registries:
         module = load_module('_module', registry)
@@ -53,6 +57,18 @@ def compute_key(s):
     return key
 
 def get_value(s):
+    """Look up key in a given context. For example, in a module called "foo", if we have:
+
+            class Bar:
+                def meth(self):
+                    return get_value('my_var')
+
+            b = Bar()
+            x = b.meth()
+
+        Then the registry/registries will be consulted for a key 'foo.Bar.meth.my_var' and it's corresponding value
+        will be returned.
+    """
     global registries
     key = compute_key(s)
     value = get_registry_data(registries)[key]
